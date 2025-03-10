@@ -11,39 +11,51 @@ Enter a password to check its strength.""")
 
 password = st.text_input("Enter a password", type="password")
 
+common_passwords = [
+    "password", "123456", "qwerty", "abc123", "password1", "admin", 
+    "123123", "hello", "passw0rd", "password123", "12345678", "password1234"
+]
+
 feedback = [""]
 
 score = 0
 
 if password:
-    if len(password) >=8:
-        score += 1
+    if password.lower() in common_passwords:
+        feedback.append("❌Password is too common. Please choose a different one.")
     else:
-        feedback.append("❌Password is too short. It should be at least 8 characters long.")
 
-    if re.search(r'[A-Z]', password) and re.search(r'[a-z]', password):
-        score += 1
-    else:
-        feedback.append("❌Password should contain both uppercase and lowercase letters.")
+        if len(password) >=8:
+            score += 1
+        else:
+            feedback.append("❌Password is too short. It should be at least 8 characters long.")
 
-    if re.search(r'\d', password):
-        score += 1
-    else:
-        feedback.append("❌Password should contain at least one digit.")
+        if re.search(r'[A-Z]', password) and re.search(r'[a-z]', password):
+            score += 1
+        else:
+            feedback.append("❌Password should contain both uppercase and lowercase letters.")
 
-    if re.search(r'[!@#$%^&*]', password):
-        score += 1
-    else:
-        feedback.append("❌Password should contain at least one special character(eg. !@#$%^&*).")
+        if re.search(r'\d', password):
+            score += 1
+        else:
+            feedback.append("❌Password should contain at least one digit.")
 
-    if score == 4:
-        feedback.append("## ✅Excellent! You are good to go👌")
-    elif score == 3:
-        feedback.append("## 🟢Your password is strong✅")
-    elif score == 2:
-        feedback.append("## 🟡Your password is moderate. It can be stronger")
-    else:
-        feedback.append("## ❌Your password is weak. It needs improvement")
+        if re.search(r'[!@#$%^&*]', password):
+            score += 1
+        else:
+            feedback.append("❌Password should contain at least one special character(eg. !@#$%^&*).")
+
+        if score == 4:
+            feedback.append("## ✅Excellent! You are good to go👌")
+        
+        elif score == 3:
+            feedback.append("## 🟢Your password is strong✅")
+        
+        elif score == 2:
+            feedback.append("## 🟡Your password is moderate. It can be stronger")
+        
+        else:
+            feedback.append("## ❌Your password is weak. It needs improvement")
 
     if feedback:
         st.markdown("## Feedback")
